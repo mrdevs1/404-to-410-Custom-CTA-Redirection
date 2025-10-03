@@ -1,0 +1,62 @@
+410 Gone function
+=--
+
+<?php
+//Redirect spammy URL to 410
+add_action('template_redirect', function() {
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+    // Apply only for /product/... URLs
+    if (preg_match('#^/product/#', $request_uri) && is_404()) {
+        status_header(410);
+        nocache_headers();
+        ?>
+        <!DOCTYPE html>
+        <html <?php language_attributes(); ?>>
+        <head>
+            <meta charset="<?php bloginfo('charset'); ?>">
+            <title>410 Gone</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    padding: 60px;
+                    background: #f9f9f9;
+                    color: #333;
+                }
+                h1 {
+                    font-size: 48px;
+                    margin-bottom: 10px;
+                    color: #d9534f;
+                }
+                p {
+                    font-size: 18px;
+                    margin-bottom: 30px;
+                }
+                a.button {
+                    display: inline-block;
+                    padding: 12px 24px;
+                    font-size: 16px;
+                    background: #0073aa;
+                    color: #fff;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    transition: background 0.3s ease;
+                }
+                a.button:hover {
+                    background: #005177;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Oops! Gone for good</h1>
+            <p>This page no longer exists.</p>
+            <a class="button" href="<?php echo home_url(); ?>">Go Back to Home</a>
+        </body>
+        </html>
+        <?php
+        exit;
+    }
+});
+
+// End
